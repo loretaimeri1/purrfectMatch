@@ -1,4 +1,3 @@
-UploadPhoto.php
 <?php
 namespace Class;
 

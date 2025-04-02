@@ -1,4 +1,3 @@
-Specie.php
 <?php
 namespace Class;
 use \PDO, \PDOException;

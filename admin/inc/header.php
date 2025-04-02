@@ -1,5 +1,5 @@
 <?php 
-require "autoloader.php";
+require "../autoloader.php";
 use Class\Session;
 $session=new Session();
 ?>
@@ -9,9 +9,10 @@ $session=new Session();
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <script src="js/fonta.js"></script>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link href="css/style.css" rel="stylesheet" />
+        <script src="../js/fonta.js"></script>
+
+        <link rel="stylesheet" href="../css/bootstrap.min.css">
+        <link href="../css/style.css" rel="stylesheet" />
         <title>PetAdoption</title>
 
         
@@ -23,7 +24,7 @@ $session=new Session();
   <!-- navbar -->
   <nav class="navbar navbar-expand-sm  navbar-dark fixed-top">
     <div class="container">
-      <a href="index.php" class="navbar-brand">PurrfectMatch <i class="fa-solid fa-paw"></i></a>
+      <a href="index.php" class="navbar-brand">PetAdoption <i class="fa-solid fa-paw"></i></a>
       <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarnav">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -33,16 +34,13 @@ $session=new Session();
             <a href="pets.php" class="nav-link">Pets</a>
           </li>
           <li class="nav-item">
-            <a href="how_to_adopt.php" class="nav-link">How to Adopt</a>
+            <a href="users.php" class="nav-link">Users</a>
           </li>
           <li class="nav-item">
-            <a href="donate.php" class="nav-link">Donate</a>
+            <a href="donations.php" class="nav-link">Donations</a>
           </li>
           <li class="nav-item">
-            <a href="report_lost_animal.php" class="nav-link">Report lost animal</a>
-          </li>
-          <li class="nav-item">
-            <a href="report_found_animal.php" class="nav-link">Report found animal</a>
+            <a href="adoptions.php" class="nav-link">Adoptions</a>
           </li>
           <li class="nav-item">
             <a href="reports.php" class="nav-link">Reports</a>
@@ -57,7 +55,7 @@ $session=new Session();
             ?>  
             <div class="collapse position-absolute p-4" style="background:var(--pink);" id="seeProfile"> 
               <a href='profile.php' class='nav-link'>Profile<i class="fa-solid fa-pen-to-square"></i></a>
-              <a href='logout.php' class='nav-link'>Log out<i class="fa-solid fa-right-from-bracket"></i></i></a>
+              <a href='../logout.php' class='nav-link'>Log out<i class="fa-solid fa-right-from-bracket"></i></i></a>
             </div>   
           </li>
          
