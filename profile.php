@@ -1,4 +1,3 @@
-profile.php
 <?php include "inc/header.php";
 ?>
 

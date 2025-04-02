@@ -1,4 +1,3 @@
-Favorites.php
 <?php
 namespace Class;
 use \PDO, \PDOException;

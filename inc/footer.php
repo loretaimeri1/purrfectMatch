@@ -1,4 +1,3 @@
-footer.php
 
   <!-- Footer Section-->
   <footer class="mt-5 mb-0">

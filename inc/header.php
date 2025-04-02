@@ -1,4 +1,3 @@
-header.php
 <?php 
 require "autoloader.php";
 use Class\Session;
