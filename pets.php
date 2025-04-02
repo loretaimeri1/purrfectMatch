@@ -1,12 +1,38 @@
-pets.php
 <?php include "inc/header.php";
 ?>
 
   <div class="home">
     <?php
+    use Class\Favorites;
     if (!empty($session->message)) {
-    echo "<h5 class='bg-light p-3'>{$session->message}</h5>";
+      echo "<h5 class='bg-light p-3'>{$session->message}</h5>";
     }
+  
+    if(isset($_POST['addToWishlist'])){
+      if(isset($_POST['petId'])){
+        if(isset($_SESSION['userId'])){
+          $petId = $_POST['petId'];
+          $userId = $_SESSION['userId'];
+
+          $favorites = new Favorites();
+          $favorites->setUserId($userId);
+
+          $favorites->setPetId($petId);
+          if (empty($favorites->find_id_unique($userId, $petId))) {
+            $favorites->create();
+            header("Location:favorites.php");
+
+        } else {
+            $session->message("This pet is already in your favorites.");
+            header("Location:pets.php");
+
+        }
+
+        } 
+      }
+    }
+    
+   
     ?>
     <div class="container mb-5">
         <div id="info">
@@ -19,23 +45,6 @@ pets.php
       <div class="row">
         <div class="col-3 border border-dark align-self-top p-3 me-3 ">
           <h1 class="fw-bold ">Filters</h1>
-
-          <!-- <p class="fw-bold">
-            Search for a specific pet
-            <a class="btn btn-dark ms-5" data-bs-toggle="collapse" href="#searchPet" role="button" 
-            aria-expanded="false" aria-controls="collapseExample"><i class="fa-solid fa-chevron-down"></i></a>
-          </p>
-          <div class="collapse mb-5" id="searchPet"> 
-            <div class="card card-body">
-              <form method="POST">
-                <div class="mb-3">
-                    <input type="text" class="form-control" placeholder="Pet Name" id="search" aria-describedby="search">
-                </div>
-                <button type="submit" name="search" class="btn btn-dark">Search</button>
-              </form>
-            </div>
-          </div> -->
-
           <p class="fw-bold">
             Species
             <a class="btn btn-dark ms-5" data-bs-toggle="collapse" href="#seeSpecies" role="button" 
@@ -119,6 +128,7 @@ pets.php
             echo "<form action='' method='POST'>";
             echo "<a href='view_pet.php?id=".$pet->getId()."' class='card my-5' style='width:18rem'>";
             echo "<img class='card-img' src='images/".$pet->getImage()."' alt='' style='width:100%; height:280px'>";
+            echo "<input type='hidden' name='petId' value='".$pet->getId()."'>";
             echo "<button type='submit' id='addToWishlist' name='addToWishlist'><i class='fa-solid fa-heart'></i></button>";
             echo "<div class='card-body'>";
             echo "<h4 class='card-title fw-bold'>".$pet->getName()."</h4>";
