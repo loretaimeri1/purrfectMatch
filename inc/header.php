@@ -39,13 +39,10 @@ $session=new Session();
             <a href="donate.php" class="nav-link">Donate</a>
           </li>
           <li class="nav-item">
-            <a href="report_lost_animal.php" class="nav-link">Report lost animal</a>
+            <a href="reports.php" class="nav-link">Report lost/found animal</a>
           </li>
           <li class="nav-item">
-            <a href="report_found_animal.php" class="nav-link">Report found animal</a>
-          </li>
-          <li class="nav-item">
-            <a href="reports.php" class="nav-link">Reports</a>
+            <a href="view_report.php" class="nav-link">View reports</a>
           </li>
           <li class="nav-item ms-5 pt-1">
             
