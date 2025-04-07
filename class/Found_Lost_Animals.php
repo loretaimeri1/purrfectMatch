@@ -98,5 +98,13 @@ class Found_Lost_Animals extends Database {
         $this->reported_at = $reported_at ?? date('Y-m-d H:i:s');
     }
 
+    public function getStatusLabel() {
+        if ($this->status == 'L') {
+            return 'Lost';
+        } elseif ($this->status == 'F') {
+            return 'Found';
+        }
+        return 'Unknown'; 
+    }
 
 }
