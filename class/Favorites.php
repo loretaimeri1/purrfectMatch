@@ -48,5 +48,15 @@ class Favorites extends Database{
         $stmt->setFetchMode(PDO::FETCH_CLASS, __NAMESPACE__ . "\\Favorites");
         return $stmt->fetchAll();
     }
+
+    public function find_id_unique($userid,$petid){
+        $sql="SELECT * FROM ". static::$db_table ." WHERE userid=:userid AND petid=:petid";
+        $stmt=$this->prepare($sql);
+        $stmt->bindParam(':userid', $userid, PDO::PARAM_INT);
+        $stmt->bindParam(':petid', $petid, PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_CLASS, __NAMESPACE__ . "\\Favorites");
+        return $stmt->fetchAll();
+    }
 }
 ?>
