@@ -44,8 +44,8 @@ Class Database{
     protected function properties(){
         $properties=array();
         foreach (static::$db_tables_fields as $db_field) {
-            if(property_exists($this,$db_field)){
-                $properties[$db_field]=$this->$db_field;
+            if (property_exists($this, $db_field) && $this->$db_field !== null) {
+                $properties[$db_field] = $this->$db_field;
             }
         }
         return $properties;

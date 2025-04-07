@@ -6,7 +6,12 @@
   <div class="row d-flex justify-content-center align-items-center">
   <?php
     if (!empty($session->message)) {
-    echo "<h5 class='bg-light p-3'>{$session->message}</h5>";
+      if($session->message == "Found_Lost_Animals added successfully"){
+        echo "<h5 class='bg-light p-3'>Report added successfully</h5>";
+      }
+      else{
+        echo "<h5 class='bg-light p-3'>{$session->message}</h5>";
+      }
     }
   ?>
     <div class="col-xl-10 mb-5 ">
@@ -44,7 +49,7 @@
                 ?>
                 <form method="POST" enctype="multipart/form-data">
                     <div class="form-outline mb-4 d-flex justify-content-center">
-                        <img class="col-lg-6 d-flex align-self-center" style="border-radius: 100%" src='uploads/<?php echo $user->getImage();?>'>
+                        <img class="col-lg-6 d-flex align-self-center" alt="profile image" style="border-radius: 100%" src='uploads/<?php echo $user->getImage();?>'>
                     </div>
                     <div class="form-outline mb-4">
                       <input type="file" id="image" name="image" class="form-control" placeholder="Image" />

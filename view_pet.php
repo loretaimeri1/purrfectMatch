@@ -1,11 +1,37 @@
 <?php include "inc/header.php";
 use Class\Pet;
+use Class\Favorites;
+
 $pet = new Pet();
 
 if(isset($_GET['id'])){
     $id =  $_GET['id'];
     $pet = $pet->find_id($id);
 }
+
+if(isset($_POST['addToWishlist'])){
+    if(isset($_GET['id'])){
+      if(isset($_SESSION['userId'])){
+        $petId = $_GET['id'];
+        $userId = $_SESSION['userId'];
+
+        $favorites = new Favorites();
+        $favorites->setUserId($userId);
+
+        $favorites->setPetId($petId);
+        if (empty($favorites->find_id_unique($userId, $petId))) {
+          $favorites->create();
+          header("Location:favorites.php");
+
+      } else {
+          $session->message("This pet is already in your favorites.");
+          header("Location:pets.php");
+
+      }
+
+      } 
+    }
+  }
 ?>
 
   <div class="home">

@@ -120,5 +120,88 @@ class User extends Database{
         $this->photoImage = $photoImage;
     }
     
+    public function create(){ 
+        try{
+            if(isset($this->photoImage)){
+                $this->startupLoad($this->photoImage);
+                $this->image = $this->filename;
+                $isFileUploaded = $this->uploadFile(); 
+                if($isFileUploaded){
+                    parent::create();
+                }
+                else{
+                    foreach($this->errors as $error){
+                        echo $error . "<br>";
+                    }
+                }
+            }
+            else{
+                parent::create();
+            }
+        }
+        catch(Exception $e){
+            echo "Could not create user " . $e->getMessage();
+        }
+    }
+
+    public function update(){
+        try {
+           if(isset($this->photoImage)){
+            $this->uploadfile = $this->src . $this->image;
+            if(!!$this->image){
+                unlink($this->uploadfile);
+            }
+            $this->startupLoad($this->photoImage);
+            $this->image = $this->filename;
+            $isFileUploaded = $this->uploadFile();
+            if($isFileUploaded){
+                parent::update();          
+            }
+            else{
+                foreach($this->errors as $error){
+                    echo $error . "<br>";
+                }
+            }
+           }
+           else{
+                if(parent::update()){
+                    return true;
+                }
+            }
+        }
+        catch(Exception $e){
+            echo "Could not update user " . $e->getMessage();
+        } 
+    }
+
+    public function delete(){
+        try{
+            if(parent::delete()){
+                $this->uploadfile = $this->src . $this->image;
+                if(file_exists($this->uploadfile)){
+                    unlink($this->uploadfile); 
+                }
+                return true;
+            }
+            else{
+                return false; 
+            }
+        }
+        catch(Exception $e){
+            echo "Could not delete user " . $e->getMessage();
+        }
+    }
+
+    public function verifyUser($email, $password)
+    {
+        $sql = "SELECT * FROM users";
+        $sql .= " WHERE email=:email AND password=:password";
+        $result = $this->prepare($sql);
+        $result->bindParam(':email', $email);
+        $result->bindParam(':password', $password);
+        $result->execute();
+        $result->setFetchMode(PDO::FETCH_CLASS, __NAMESPACE__ . "\\{$this->getClassName()}");
+        return $result->fetch();
+    }
 }
 ?>
