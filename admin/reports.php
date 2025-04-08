@@ -1,6 +1,5 @@
 <?php include "inc/header.php";
-use Class\FoundAnimalReport;
-use Class\LostAnimalReport;
+use Class\Found_Lost_Animals;
 ?>
 
 <div class="home">
@@ -31,17 +30,19 @@ use Class\LostAnimalReport;
                 
                 <tbody>
                 <?php 
-                    $foundReports = new FoundAnimalReport();
+                    $foundReports = new Found_Lost_Animals();
                     foreach ($foundReports->find_all() as $report) {
+                        if($report->getStatus() == 'F'){ // Only show found reports
                         echo "<tr>";
                         echo "<td>" . $report->getUserId() . "</td>";
                         echo "<td>" . $report->getDescription() . "</td>";
                         echo "<td>" . $report->getLocation() . "</td>";
                         echo "<td><img style='height:50px; width:50px; object-fit:cover;' src='../images/{$report->getPhoto()}' alt=''/></td>";
                         echo "<td>" . $report->getReportedAt() . "</td>";
-                        echo "<td class='p-3'><a href='edit_found_report.php?id=". $report->getId() ."'><button class='btn btn-dark'><i class='fa-solid fa-edit'> </i></button></a></td>";
-                        echo "<td class='p-3'><a href='delete_found_report.php?id=". $report->getId() ."'><button class='btn btn-dark'><i class='fa-solid fa-trash'></i></button></a></td>";
+                        echo "<td class='p-3'><a href='edit_found_lost_report.php?id=". $report->getId() ."'><button class='btn btn-dark'><i class='fa-solid fa-edit'> </i></button></a></td>";
+                        echo "<td class='p-3'><a href='delete_found_lost_report.php?id=". $report->getId() ."'><button class='btn btn-dark'><i class='fa-solid fa-trash'></i></button></a></td>";
                         echo "</tr>";
+                        }
                     }
                 ?>
                 </tbody>
@@ -79,17 +80,19 @@ use Class\LostAnimalReport;
                 
                 <tbody>
                 <?php 
-                    $lostReports = new LostAnimalReport();
+                    $lostReports = new Found_Lost_Animals();
                     foreach ($lostReports->find_all() as $report) {
+                        if($report->getStatus() == 'L'){ // Only show found reports
                         echo "<tr>";
                         echo "<td>" . $report->getUserId() . "</td>";
                         echo "<td>" . $report->getDescription() . "</td>";
                         echo "<td>" . $report->getLocation() . "</td>";
                         echo "<td><img style='height:50px; width:50px; object-fit:cover;' src='../images/{$report->getPhoto()}' alt=''/></td>";
                         echo "<td>" . $report->getReportedAt() . "</td>";
-                        echo "<td class='p-3'><a href='edit_lost_report.php?id=". $report->getId() ."'><button class='btn btn-dark'><i class='fa-solid fa-edit'> </i></button></a></td>";
-                        echo "<td class='p-3'><a href='delete_lost_report.php?id=". $report->getId() ."'><button class='btn btn-dark'><i class='fa-solid fa-trash'></i></button></a></td>";
+                        echo "<td class='p-3'><a href='edit_found_lost_report.php?id=". $report->getId() ."'><button class='btn btn-dark'><i class='fa-solid fa-edit'> </i></button></a></td>";
+                        echo "<td class='p-3'><a href='delete_found_lost_report.php?id=". $report->getId() ."'><button class='btn btn-dark'><i class='fa-solid fa-trash'></i></button></a></td>";
                         echo "</tr>";
+                        }
                     }
                 ?>
                 </tbody>
