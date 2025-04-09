@@ -22,6 +22,9 @@ if(isset($_SESSION['userId'])){
       header("Location:pets.php");
   }
 }
+else{
+    header("Location:login.php?error=loginrequired");
+}
 ?>
 
 <section class="gradient-form">

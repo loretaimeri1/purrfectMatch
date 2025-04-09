@@ -21,14 +21,15 @@
           if (empty($favorites->find_id_unique($userId, $petId))) {
             $favorites->create();
             header("Location:favorites.php");
-
-        } else {
+          } else {
             $session->message("This pet is already in your favorites.");
             header("Location:pets.php");
 
-        }
-
+          }
         } 
+        else{
+          header("Location:login.php?error=loginrequired");
+        }
       }
     }
     

@@ -112,8 +112,12 @@ Class Database{
             $_SESSION['message'] = "{$this->getClassName()} deleted successfully";
         }
         catch (PDOException $e) {
-            die("Error during the deletion proccess" . $e->getMessage());
-        }  
+            if ($e->errorInfo[1] == 1451) {
+                $_SESSION['message'] = "Cannot delete {$this->getClassName()} because it is referenced by other data.";
+            } else {
+                $_SESSION['message'] = "Error during the deletion process: " . $e->getMessage();
+            }
+        }   
     }
 
 

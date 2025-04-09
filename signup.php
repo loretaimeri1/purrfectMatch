@@ -34,23 +34,28 @@ if (isset($_POST['signup'])) {
     }
 
     if (empty($errors)) {
-        $user = new User();
-        $user->setFirstname($_POST['firstname']);
-        $user->setLastname($_POST['lastname']);
-        $user->setPhone($_POST['phone']);
-        $user->setAddress($_POST['address']);
-        $user->setEmail($_POST['email']);
-        $user->setPassword($_POST['password']);
-        $user->create();
-
-        $user = $user->verifyUser($user->getEmail(), $user->getPassword());
-        if ($user) {
-            $session->login($user);
-            header("Location: " . ($user->getRole() == 1 ? "admin/index.php" : "index.php"));
-            exit();
-        } else {
-            $session->message("Could not sign up");
-        }
+      $user = new User();
+    
+      if ($user->emailExists($_POST['email'])) {
+          $errors['email'] = 'Email already exists. Please use a different one.';
+      } else {
+          $user->setFirstname($_POST['firstname']);
+          $user->setLastname($_POST['lastname']);
+          $user->setPhone($_POST['phone']);
+          $user->setAddress($_POST['address']);
+          $user->setEmail($_POST['email']);
+          $user->setPassword($_POST['password']);
+          $user->create();
+  
+          $user = $user->verifyUser($user->getEmail(), $user->getPassword());
+          if ($user) {
+              $session->login($user);
+              header("Location: " . ($user->getRole() == 1 ? "admin/index.php" : "index.php"));
+              exit();
+          } else {
+              $session->message("Could not sign up");
+          }
+      }
     }
 }
 ?>

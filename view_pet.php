@@ -30,6 +30,9 @@ if(isset($_POST['addToWishlist'])){
       }
 
       } 
+      else{
+        header("Location:login.php?error=loginrequired");
+      }
     }
   }
 ?>

@@ -43,6 +43,9 @@ if(isset($_SESSION['userId'])){
         }
     }
 }
+else{
+  header("Location:login.php?error=loginrequired");
+}
 ?>
 
 <section class="text-center">

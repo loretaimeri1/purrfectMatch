@@ -6,6 +6,12 @@ if ($session->isSignedIn()) {
     header("Location: index.php");
 }
 
+if (isset($_GET['error'])) {
+    if ($_GET['error'] == 'loginrequired') {
+        echo "<script>alert('You need to login first!');</script>";
+    }
+}
+
 ?>
 
 <section class="h-100 gradient-form">

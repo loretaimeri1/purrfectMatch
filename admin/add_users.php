@@ -23,6 +23,8 @@ include "inc/header.php";
                     }
                     if (!Validator::isEmail($_POST['email'])) {
                         $errors['email'] = 'Email is invalid.';
+                    } else if ($user->emailExists($_POST['email'])) {
+                        $errors['email'] = 'This email is already registered.';
                     }
                     if (!Validator::isNumber($_POST['phone'])) {
                         $errors['phone'] = 'Phone must be numeric.';
