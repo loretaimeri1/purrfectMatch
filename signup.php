@@ -1,8 +1,65 @@
-<?php include "inc/header.php";
+<?php 
+include "inc/header.php"; 
+use Class\User;
+use Class\Validator;
+
+$errors = [];
+
+// Redirect if already signed in
+if ($session->isSignedIn()) {
+    header("Location: index.php");
+    exit();
+}
+
+// Handle form submission
+if (isset($_POST['signup'])) {
+    if (!Validator::isRequired($_POST['firstname'])) {
+        $errors['firstname'] = 'First name is required.';
+    }
+    if (!Validator::isRequired($_POST['lastname'])) {
+        $errors['lastname'] = 'Last name is required.';
+    }
+    if (!Validator::isEmail($_POST['email'])) {
+        $errors['email'] = 'Invalid email address.';
+    }
+    if (!Validator::isRequired($_POST['address'])) {
+        $errors['address'] = 'Address is required.';
+    }
+    if (!Validator::isNumber($_POST['phone'])) {
+        $errors['phone'] = 'Phone must be numeric.';
+    }
+    if (!Validator::isRequired($_POST['password'])) {
+        $errors['password'] = 'Password is required.';
+    }
+    if ($_POST['password'] !== $_POST['confirmPassword']) {
+        $errors['confirmPassword'] = 'Passwords do not match.';
+    }
+
+    if (empty($errors)) {
+        $user = new User();
+        $user->setFirstname($_POST['firstname']);
+        $user->setLastname($_POST['lastname']);
+        $user->setPhone($_POST['phone']);
+        $user->setAddress($_POST['address']);
+        $user->setEmail($_POST['email']);
+        $user->setPassword($_POST['password']);
+        $user->create();
+
+        $user = $user->verifyUser($user->getEmail(), $user->getPassword());
+        if ($user) {
+            $session->login($user);
+            header("Location: " . ($user->getRole() == 1 ? "admin/index.php" : "index.php"));
+            exit();
+        } else {
+            $session->message("Could not sign up");
+        }
+    }
+}
 ?>
+
 <section class="mt-5 mb-5">
-  <div class="container py-5 ">
-    <div class="row d-flex justify-content-center align-items-center ">
+  <div class="container py-5">
+    <div class="row d-flex justify-content-center align-items-center">
       <div class="col-xl-10">
         <div class="card rounded-3 text-black">
           <div class="row g-0">
@@ -11,72 +68,64 @@
             </div>
             <div class="col-lg-6">
               <div class="card-body p-md-5 mx-md-4">
+                <div class="text-center py-5">
+                  <h4 class="mb-2 p-2" style="background: var(--lightpink)">Sign Up</h4>
+                </div>
 
-                    <div class="text-center py-5">
-                      <h4 class="mb-2 p-2" style="background: var(--lightpink)">Sign Up</h4>
-                    </div>
+                <form method="POST" novalidate>
+                  <div class="form-outline mb-3">
+                    <input type="text" name="firstname" class="form-control" placeholder="Name" value="<?= $_POST['firstname'] ?? '' ?>">
+                    <?php if (isset($errors['firstname'])): ?>
+                      <small class="text-danger"><?= $errors['firstname'] ?></small>
+                    <?php endif; ?>
+                  </div>
 
-                    <?php 
-                    use Class\User;
-                    
+                  <div class="form-outline mb-3">
+                    <input type="text" name="lastname" class="form-control" placeholder="Lastname" value="<?= $_POST['lastname'] ?? '' ?>">
+                    <?php if (isset($errors['lastname'])): ?>
+                      <small class="text-danger"><?= $errors['lastname'] ?></small>
+                    <?php endif; ?>
+                  </div>
 
-                    if ($session->isSignedIn()) {
-                        header("Location: index.php");
-                    }
+                  <div class="form-outline mb-3">
+                    <input type="text" name="email" class="form-control" placeholder="Email address" value="<?= $_POST['email'] ?? '' ?>">
+                    <?php if (isset($errors['email'])): ?>
+                      <small class="text-danger"><?= $errors['email'] ?></small>
+                    <?php endif; ?>
+                  </div>
 
-                    if (isset($_POST['signup'])) {
-                      if($_POST['password']===$_POST['confirmPassword']){
+                  <div class="form-outline mb-3">
+                    <input type="text" name="address" class="form-control" placeholder="Address" value="<?= $_POST['address'] ?? '' ?>">
+                    <?php if (isset($errors['address'])): ?>
+                      <small class="text-danger"><?= $errors['address'] ?></small>
+                    <?php endif; ?>
+                  </div>
 
-                      
-                        $user = new User();
-                        $user->setFirstname($_POST['firstname']);
-                        $user->setLastname($_POST['lastname']);
-                        $user->setPhone($_POST['phone']);
-                        $user->setAddress($_POST['address']);
-                        $user->setEmail($_POST['email']);
-                        $user->setPassword($_POST['password']);
-                        $user->create();
-                        $user = $user->verifyUser($user->getEmail(), $user->getPassword());
-                        if ($user) {
-                            $session->login($user);
-                            if($user->getRole()==1){
-                              header("Location: admin/index.php");
-                            }
-                            else{
-                            header("Location: index.php");}
-                        }
-                        else {
-                            $session->message("Could not sign up");
-                        }
-                    }
-                  }
-                    ?>
-                    <form method="POST">
-                    <div class="form-outline mb-4">
-                            <input type="text" id="name" name="firstname" class="form-control" placeholder="Name" />
-                        </div>
-                        <div class="form-outline mb-4">
-                            <input type="text" id="lastname" name="lastname" class="form-control" placeholder="Lastname" />
-                        </div>
-                        <div class="form-outline mb-4">
-                            <input type="text" id="email" name="email" class="form-control" placeholder="Email address" />
-                        </div>
-                        <div class="form-outline mb-4">
-                            <input type="text" id="address" name="address" class="form-control" placeholder="Address" />
-                        </div>
-                        <div class="form-outline mb-4">
-                            <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone Number" />
-                        </div>
-                        <div class="form-outline mb-4">
-                            <input type="password" id="password" name="password" class="form-control" placeholder="Password" />
-                        </div>
-                        <div class="form-outline mb-4">
-                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm password" />
-                        </div>
-                        <div class="d-flex align-items-center justify-content-center pb-3">
-                            <button type="submit" name='signup' class="btn px-4 py-2" style="background: var(--lightpink)">Sign up</button>
-                        </div>
-                    </form>
+                  <div class="form-outline mb-3">
+                    <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="<?= $_POST['phone'] ?? '' ?>">
+                    <?php if (isset($errors['phone'])): ?>
+                      <small class="text-danger"><?= $errors['phone'] ?></small>
+                    <?php endif; ?>
+                  </div>
+
+                  <div class="form-outline mb-3">
+                    <input type="password" name="password" class="form-control" placeholder="Password">
+                    <?php if (isset($errors['password'])): ?>
+                      <small class="text-danger"><?= $errors['password'] ?></small>
+                    <?php endif; ?>
+                  </div>
+
+                  <div class="form-outline mb-3">
+                    <input type="password" name="confirmPassword" class="form-control" placeholder="Confirm password">
+                    <?php if (isset($errors['confirmPassword'])): ?>
+                      <small class="text-danger"><?= $errors['confirmPassword'] ?></small>
+                    <?php endif; ?>
+                  </div>
+
+                  <div class="d-flex align-items-center justify-content-center pb-3">
+                    <button type="submit" name="signup" class="btn px-4 py-2" style="background: var(--lightpink)">Sign up</button>
+                  </div>
+                </form>
 
               </div>
             </div>
@@ -86,4 +135,16 @@
     </div>
   </div>
 </section>
-<?php include "inc/footer.php";?>
+
+<script>
+document.querySelectorAll("input").forEach(field => {
+    field.addEventListener("input", () => {
+        const error = field.nextElementSibling;
+        if (error && error.classList.contains("text-danger")) {
+            error.remove();
+        }
+    });
+});
+</script>
+
+<?php include "inc/footer.php"; ?>
