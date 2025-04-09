@@ -5,13 +5,11 @@ use Class\Validator;
 
 $errors = [];
 
-// Redirect if already signed in
 if ($session->isSignedIn()) {
     header("Location: index.php");
     exit();
 }
 
-// Handle form submission
 if (isset($_POST['signup'])) {
     if (!Validator::isRequired($_POST['firstname'])) {
         $errors['firstname'] = 'First name is required.';

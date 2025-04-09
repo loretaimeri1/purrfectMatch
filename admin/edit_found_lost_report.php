@@ -11,19 +11,15 @@ if (isset($_GET['id'])) {
 }
 
 if (isset($_POST['edit_report'])) {
-    // Update the description and location
     $report->setDescription($_POST['description']);
     $report->setLocation($_POST['location']);
     
-    // Handle photo upload if new file is provided
     if ($_FILES['photo']['size'] > 0) {
         $report->setPhoto($_FILES['photo']);
     }
     
-    // Update the record in the database
     $report->update();
     
-    // Redirect after update
     header("Location: reports.php");
 }
 

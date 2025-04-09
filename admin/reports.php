@@ -6,7 +6,6 @@ use Class\Found_Lost_Animals;
 <div class="container-fluid">
         <h1 class="mt-4">Found and Lost Reports</h1>
         <div class="row">
-            <!-- Found Animals Table -->
             <div class="col-12 mb-5">
             <h2 class="mt-4">Found Animals</h2>
             <div class="table-responsive">
@@ -32,7 +31,7 @@ use Class\Found_Lost_Animals;
                 <?php 
                     $foundReports = new Found_Lost_Animals();
                     foreach ($foundReports->find_all() as $report) {
-                        if($report->getStatus() == 'F'){ // Only show found reports
+                        if($report->getStatus() == 'F'){ 
                         echo "<tr>";
                         echo "<td>" . $report->getUserId() . "</td>";
                         echo "<td>" . $report->getDescription() . "</td>";
@@ -61,7 +60,6 @@ use Class\Found_Lost_Animals;
            </div>
            </div>
 
-           <!-- Lost Animals Table -->
             <div class="col-12">
             <h2 class="mt-4">Lost Animals</h2>
             <div class="table-responsive">
@@ -82,7 +80,7 @@ use Class\Found_Lost_Animals;
                 <?php 
                     $lostReports = new Found_Lost_Animals();
                     foreach ($lostReports->find_all() as $report) {
-                        if($report->getStatus() == 'L'){ // Only show found reports
+                        if($report->getStatus() == 'L'){ 
                         echo "<tr>";
                         echo "<td>" . $report->getUserId() . "</td>";
                         echo "<td>" . $report->getDescription() . "</td>";

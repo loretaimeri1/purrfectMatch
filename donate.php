@@ -1,21 +1,44 @@
-<?php include "inc/header.php";
+<?php
+include "inc/header.php";
 use Class\User;
 use Class\Donation;
+use Class\Validator;
+
 $user = new User();
 $donation = new Donation();
+$errors = [];
+
 if(isset($_SESSION['userId'])){
-    $userId =  $_SESSION['userId'];
+    $userId = $_SESSION['userId'];
     $user = $user->find_id($userId);
+
     if(isset($_POST['donate'])){
+        // Validate fields
+        if (!Validator::isRequired($_POST['firstname'])) {
+            $errors['firstname'] = "First name is required.";
+        }
+        if (!Validator::isRequired($_POST['lastname'])) {
+            $errors['lastname'] = "Last name is required.";
+        }
+        if (!Validator::isEmail($_POST['email'])) {
+            $errors['email'] = "Invalid email format.";
+        }
+        if (!Validator::isNumber($_POST['amount'])) {
+            $errors['amount'] = "Amount must be a valid number.";
+        }
 
-      $donation->setUserId($userId);
-      $donation->setAmount($_POST['amount']);
-      $donation->create();
-
-      header("Location:profile.php");
-  }
+        // If no errors, proceed to create donation
+        if (empty($errors)) {
+            $donation->setUserId($userId);
+            $donation->setAmount($_POST['amount']);
+            $donation->create();
+            header("Location: profile.php");
+            exit;
+        }
+    }
 }
 ?>
+
 <section class="text-center">
   <div id='top'></div>
 
@@ -30,29 +53,42 @@ if(isset($_SESSION['userId'])){
               <div class="col-md-6 mb-4">
                 <div class="form-outline">
                   <input type="text" id="name" name="firstname" value="<?php echo $user->getFirstName();?>" class="form-control" placeholder="Name" />
+                  <?php if (isset($errors['firstname'])): ?>
+                    <small class="text-danger"><?= $errors['firstname'] ?></small>
+                  <?php endif; ?>
                 </div>
               </div>
               <div class="col-md-6 mb-4">
                 <div class="form-outline">
                   <input type="text" id="lastname" name="lastname" value="<?php echo $user->getLastName();?>" class="form-control" placeholder="Lastname"  />
+                  <?php if (isset($errors['lastname'])): ?>
+                    <small class="text-danger"><?= $errors['lastname'] ?></small>
+                  <?php endif; ?>
                 </div>
               </div>
             </div>
 
             <div class="form-outline mb-4">
-              <input type="email" id="email" name="email" value="<?php echo $user->getEmail();?>" class="form-control" placeholder="Email"  />
+              <input type="email" id="email" name="email" value="<?php echo $user->getEmail();?>" class="form-control" placeholder="Email" />
+              <?php if (isset($errors['email'])): ?>
+                <small class="text-danger"><?= $errors['email'] ?></small>
+              <?php endif; ?>
             </div>
 
             <div class="form-outline mb-4">
-              <input type="number"step="0.01" id="amount" name="amount" class="form-control"placeholder="Amount"  />
+              <input type="number" step="0.01" id="amount" name="amount" class="form-control" placeholder="Amount" />
+              <?php if (isset($errors['amount'])): ?>
+                <small class="text-danger"><?= $errors['amount'] ?></small>
+              <?php endif; ?>
             </div>
+
             <button type="submit" name="donate" class="btn btn-primary btn-block mb-4">Donate</button>
 
-            </div>
           </form>
         </div>
       </div>
     </div>
   </div>
 </section>
-<?php include "inc/footer.php";?>
+
+<?php include "inc/footer.php"; ?>

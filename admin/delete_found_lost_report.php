@@ -10,20 +10,15 @@ use Class\Found_Lost_Animals;
         <h1 class="mt-4">Found and Lost Reports</h1>
         <div class="row justify-content-center">
             <?php    
-                // Create an instance of the Found_Lost_Animals class
                 $report = new Found_Lost_Animals();
 
-                // Get the ID of the report
                 if (isset($_GET['id'])) {
                     $id = $_GET['id'];
-                    $report = $report->find_id($id); // Get the specific report
+                    $report = $report->find_id($id); 
                 }
 
-                // Check if the delete button was clicked
                 if (isset($_POST['delete_report'])) {
-                    // Delete the report
                     $report->delete();
-                    // Redirect to the reports page after deletion
                     header("Location: reports.php");
                 }
             ?>
@@ -57,7 +52,6 @@ use Class\Found_Lost_Animals;
                                 <img style="height:50px; width:50px; object-fit:cover;" src="../images/<?php echo $report->getPhoto(); ?>" alt="" />
                             </div>
                             
-                            <!-- Delete button -->
                             <input class="btn btn-dark" id="delete" value="Delete Report" type="submit" name="delete_report" />
                         </form>
                     </div>
